@@ -1,9 +1,3 @@
-// MQTT三元组
-#define ClientID "67604637ef99673c8ad65ca8_stm32_0_1_2024122114"
-#define Username "67604637ef99673c8ad65ca8_stm32"
-#define Password \
-    "57a9b6cebdf0310af3adffcd9c7bdd84ec0c060f6ad492526223bcce7ac6dd3f"
-
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -11,6 +5,14 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>  // 需要包含这个头文件以使用inet_addr函数
 #include "connect_and_connack.h"
+
+// MQTT三元组
+#define ClientID "67604637ef99673c8ad65ca8_stm32_0_1_2024122114"
+#define Username "67604637ef99673c8ad65ca8_stm32"
+#define Password \
+    "57a9b6cebdf0310af3adffcd9c7bdd84ec0c060f6ad492526223bcce7ac6dd3f"
+
+
 
 extern const unsigned char parket_subAck[];
 

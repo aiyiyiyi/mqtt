@@ -25,10 +25,6 @@
 #define POST_TOPIC \
     "$oc/devices/67604637ef99673c8ad65ca8_stm32/sys/properties/report"  // 发布
 
-void MQTT_SendBuf(unsigned char *buf, size_t len);
-int Client_GetData(unsigned char *buffer);
-int Client_SendData(unsigned char *buf, size_t len);
-
 unsigned char Buff[256];
 int sockfd;
 size_t mqtt_txlen = 0;

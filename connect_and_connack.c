@@ -34,14 +34,12 @@ const unsigned char parket_heart[] = {0xc0, 0x00};
 const unsigned char parket_heart_reply[] = {0xc0, 0x00};
 const unsigned char parket_subAck[] = {0x90, 0x03};
 
-void MQTT_SendBuf(unsigned char *buf, unsigned int len);
+void MQTT_SendBuf(unsigned char *buf, size_t len);
 int Client_GetData(unsigned char *buffer);
-int Client_SendData(unsigned char *buf, unsigned int len);
-unsigned char MQTT_Connect(
-    const char *clientID, const char *username, const char *password);
+int Client_SendData(unsigned char *buf, size_t len);
+unsigned char MQTT_Connect(const char *clientID, const char *username, const char *password, int sockfd);
 
-unsigned char MQTT_Connect(
-    const char *clientID, const char *username, const char *password) {
+unsigned char MQTT_Connect(const char *clientID, const char *username, const char *password, int sockfd) {
     mqtt_txlen = 0;  // 重置缓冲区长度
     mqtt_txbuf[mqtt_txlen++] = 0x10;
     GlobalDataLen =
