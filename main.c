@@ -8,6 +8,7 @@
 #include "connect_and_connack.h"
 #include "PUBACK.h"
 #include "PUBLISH.h"
+#include "globals.h"  // 包含全局变量头文件
 
 #define SERVER_IP "117.78.5.125"
 #define SERVER_PORT 1883
@@ -27,45 +28,10 @@
 
 unsigned char Buff[256];
 int sockfd;
-size_t mqtt_txlen = 0;
 unsigned char mqtt_txbuf[256];
-size_t mqtt_rxlen = 0;
 unsigned char mqtt_rxbuf[1024 * 1024];
-int ClientIDLen = sizeof(ClientID) - 1;
-int UsernameLen = sizeof(Username) - 1;
-int PasswordLen = sizeof(Password) - 1;
 size_t GlobalDataLen;
-size_t Size = 0;
 char mqtt_message[1024];
-double TEMP = 10.0;
-
-typedef enum {
-    // 名字 	    值 			报文流动方向 	描述
-    M_RESERVED1 = 0,  //	禁止	保留
-    M_CONNECT,        //	客户端到服务端	客户端请求连接服务端
-    M_CONNACK,        //	服务端到客户端	连接报文确认
-    M_PUBLISH,        //	两个方向都允许	发布消息
-    M_PUBACK,         //	两个方向都允许	QoS 1消息发布收到确认
-    M_PUBREC,  //	两个方向都允许	发布收到（保证交付第一步）
-    M_PUBREL,  //	两个方向都允许	发布释放（保证交付第二步）
-    M_PUBCOMP,  //	两个方向都允许	QoS 2消息发布完成（保证交互第三步）
-    M_SUBSCRIBE,    //	客户端到服务端	客户端订阅请求
-    M_SUBACK,       //	服务端到客户端	订阅请求报文确认
-    M_UNSUBSCRIBE,  //	客户端到服务端	客户端取消订阅请求
-    M_UNSUBACK,     //	服务端到客户端	取消订阅报文确认
-    M_PINGREQ,      //	客户端到服务端	心跳请求
-    M_PINGRESP,     //	服务端到客户端	心跳响应
-    M_DISCONNECT,   //	客户端到服务端	客户端断开连接
-    M_RESERVED2,    //	禁止	保留
-} _typdef_mqtt_message;
-
-// 连接成功服务器回应 20 02 00 00
-// 客户端主动断开连接 e0 00
-const unsigned char parket_connectAck[] = {0x20, 0x02, 0x00, 0x00};
-const unsigned char parket_disconnect[] = {0xe0, 0x00};
-const unsigned char parket_heart[] = {0xc0, 0x00};
-const unsigned char parket_heart_reply[] = {0xc0, 0x00};
-const unsigned char parket_subAck[] = {0x90, 0x03};
 
 void MQTT_SendBuf(unsigned char *buf, size_t len);
 int Client_GetData(unsigned char *buffer);
@@ -148,6 +114,31 @@ void MQTT_Init(void) {
     memset(mqtt_rxbuf, 0, mqtt_rxlen);
     memset(mqtt_txbuf, 0, mqtt_txlen);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*unsigned char MQTT_Connect(
     const char *clientID, const char *username, const char *password) {

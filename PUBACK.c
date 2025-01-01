@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>  // 需要包含这个头文件以使用inet_addr函数
 #include "connect_and_connack.h"
+#include "globals.h"  // 包含全局变量头文件
 
 // MQTT三元组
 #define ClientID "67604637ef99673c8ad65ca8_stm32_0_1_2024122114"
@@ -12,26 +13,11 @@
 #define Password \
     "57a9b6cebdf0310af3adffcd9c7bdd84ec0c060f6ad492526223bcce7ac6dd3f"
 
-
-
-extern const unsigned char parket_subAck[];
-
-#define SERVER_IP "117.78.5.125"  // 服务器IP地址
-#define SERVER_PORT 1883          // 服务器端口
-
 unsigned char Buff[256];
-int sockfd;
-size_t mqtt_txlen = 0;
 unsigned char mqtt_txbuf[256];
-size_t mqtt_rxlen = 0;
 unsigned char mqtt_rxbuf[1024 * 1024];
-int ClientIDLen = sizeof(ClientID) - 1;
-int UsernameLen = sizeof(Username) - 1;
-int PasswordLen = sizeof(Password) - 1;
 size_t GlobalDataLen;
-size_t Size = 0;
 char mqtt_message[1024];
-double TEMP = 10.0;
 
 // 发布确认
 unsigned char SubscribeTopic(
@@ -113,6 +99,23 @@ unsigned char SubscribeTopic(
     }
     return 1;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*int main() {
     int sockfd;

@@ -1,35 +1,17 @@
-// MQTT三元组
-#define ClientID "67604637ef99673c8ad65ca8_stm32_0_1_2024122114"
-#define Username "67604637ef99673c8ad65ca8_stm32"
-#define Password \
-    "57a9b6cebdf0310af3adffcd9c7bdd84ec0c060f6ad492526223bcce7ac6dd3f"
-
 #include <unistd.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
 #include <sys/socket.h>  // 用于 send 函数
 #include <arpa/inet.h>   // 用于套接字操作
+#include "globals.h"
 #include "connect_and_connack.h"
 
-#define SERVER_IP "117.78.5.125"  // 服务器IP地址
-#define SERVER_PORT 1883          // 服务器端口
-
-extern const unsigned char parket_subAck[];
-
-unsigned char Buff[256];
-int sockfd;
-size_t mqtt_txlen = 0;
-unsigned char mqtt_txbuf[256];
-size_t mqtt_rxlen = 0;
-unsigned char mqtt_rxbuf[1024 * 1024];
-int ClientIDLen = sizeof(ClientID) - 1;
-int UsernameLen = sizeof(Username) - 1;
-int PasswordLen = sizeof(Password) - 1;
-size_t GlobalDataLen;
-size_t Size = 0;
-char mqtt_message[1024];
-double TEMP = 10.0;
+// MQTT三元组
+#define ClientID "67604637ef99673c8ad65ca8_stm32_0_1_2024122114"
+#define Username "67604637ef99673c8ad65ca8_stm32"
+#define Password \
+    "57a9b6cebdf0310af3adffcd9c7bdd84ec0c060f6ad492526223bcce7ac6dd3f"
 
 // 模拟 MQTT 发布数据函数
 unsigned char MQTT_PublishData(char *topic, char *message, unsigned char qos) {
