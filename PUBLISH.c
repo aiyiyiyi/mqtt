@@ -1,12 +1,21 @@
+// MQTT三元组
+#define ClientID "67604637ef99673c8ad65ca8_stm32_0_1_2024122114"
+#define Username "67604637ef99673c8ad65ca8_stm32"
+#define Password \
+    "57a9b6cebdf0310af3adffcd9c7bdd84ec0c060f6ad492526223bcce7ac6dd3f"
+
 #include <unistd.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
 #include <sys/socket.h>  // 用于 send 函数
 #include <arpa/inet.h>   // 用于套接字操作
+#include "connect_and_connack.h"
 
 #define SERVER_IP "117.78.5.125"  // 服务器IP地址
 #define SERVER_PORT 1883          // 服务器端口
+
+extern const unsigned char parket_subAck[];
 
 unsigned char Buff[256];
 int sockfd;
@@ -82,6 +91,35 @@ unsigned char MQTT_PublishData(char *topic, char *message, unsigned char qos) {
     return mqtt_txlen;
 }
 
+/*int main() {
+    int sockfd;
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0) {
+        perror("socket");
+        return 1;
+    }
+
+    struct sockaddr_in sin = {0}; // 初始化结构体
+    sin.sin_family = AF_INET;
+    sin.sin_port = htons(SERVER_PORT);
+    sin.sin_addr.s_addr = inet_addr(SERVER_IP);
+
+    if (connect(sockfd, (struct sockaddr*)&sin, sizeof(sin)) < 0) {
+        perror("connect");
+        close(sockfd);
+        return 1;
+    }
+    printf("连接成功\n");
+
+    // 测试MQTT发布函数
+    char* topic = "test/topic";
+    char* message = "{\"key\":\"value\"}";
+    unsigned char qos = 0;
+    MQTT_PublishData(topic, message, qos);
+
+    close(sockfd);
+    return 0;
+}*/
 
 /*int main() {
     int sockfd;

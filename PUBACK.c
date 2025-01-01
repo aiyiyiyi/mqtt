@@ -1,9 +1,18 @@
+// MQTT三元组
+#define ClientID "67604637ef99673c8ad65ca8_stm32_0_1_2024122114"
+#define Username "67604637ef99673c8ad65ca8_stm32"
+#define Password \
+    "57a9b6cebdf0310af3adffcd9c7bdd84ec0c060f6ad492526223bcce7ac6dd3f"
+
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <stdint.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>  // 需要包含这个头文件以使用inet_addr函数
+#include "connect_and_connack.h"
+
+extern const unsigned char parket_subAck[];
 
 #define SERVER_IP "117.78.5.125"  // 服务器IP地址
 #define SERVER_PORT 1883          // 服务器端口
@@ -21,6 +30,7 @@ size_t GlobalDataLen;
 size_t Size = 0;
 char mqtt_message[1024];
 double TEMP = 10.0;
+
 // 发布确认
 unsigned char SubscribeTopic(
     char *topic, unsigned char qos, unsigned char whether) {
@@ -101,6 +111,41 @@ unsigned char SubscribeTopic(
     }
     return 1;
 }
+
+/*int main() {
+    int sockfd;
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0) {
+        perror("socket");
+        return 1;
+    }
+    struct sockaddr_in sin = {0}; // 初始化结构体
+    sin.sin_family = AF_INET;
+    sin.sin_port = htons(SERVER_PORT); // 修正函数名为htons
+    sin.sin_addr.s_addr = inet_addr(SERVER_IP);
+
+    if (connect(sockfd, (struct sockaddr *)&sin, sizeof(sin)) < 0) {
+        perror("connect");
+        close(sockfd);
+        return 1;
+    }
+    printf("连接成功\n");
+
+    // 测试MQTT订阅函数
+    char* topic = "test/topic";
+    unsigned char qos = 1;
+    unsigned char whether = 1; // 1表示订阅，0表示取消订阅
+    unsigned char result = SubscribeTopic(topic, qos, whether, sockfd);
+
+    if (result == 0) {
+        printf("订阅成功\n");
+    } else {
+        printf("订阅失败\n");
+    }
+
+    close(sockfd);
+    return 0;
+}*/
 
 /*int main() {
     int sockfd;

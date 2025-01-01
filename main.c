@@ -367,7 +367,7 @@ unsigned char SubscribeTopic(
     // 循环连接
     for (i = 0; i < 100; i++) {
         //将接收缓冲区 mqtt_rxbuf 的前 mqtt_rxlen 个字节全部设置为
-         //* 0，即清空该缓冲区
+         // 0，即清空该缓冲区
         memset(mqtt_rxbuf, 0, sizeof(mqtt_rxbuf));
         send(sockfd, mqtt_txbuf, mqtt_txlen, 0);  // 使用send函数发送数据
         SIZE = recv(sockfd, buff, sizeof(buff), 0);  // 使用recv函数接收数据
