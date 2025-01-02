@@ -68,3 +68,36 @@ unsigned char MQTT_PublishData(char *topic, char *message, unsigned char qos) {
 
     return mqtt_txlen;
 }
+
+
+
+int Socket() {
+    int sockfd;
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0) {
+        perror("socket");
+        return 1;
+    }
+
+    struct sockaddr_in sin = {0}; // 初始化结构体
+    sin.sin_family = AF_INET;
+    sin.sin_port = htons(SERVER_PORT);
+    sin.sin_addr.s_addr = inet_addr(SERVER_IP);
+
+    if (connect(sockfd, (struct sockaddr*)&sin, sizeof(sin)) < 0) {
+        perror("connect");
+        close(sockfd);
+        return 1;
+    }
+    printf("连接成功\n");
+
+    // 测试MQTT发布函数
+    char* topic = "test/topic";
+    char* message = "{\"key\":\"value\"}";
+    unsigned char qos = 0;
+    MQTT_PublishData(topic, message, qos, sockfd);
+
+    close(sockfd);
+    return 0;
+}
+
