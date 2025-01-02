@@ -82,12 +82,12 @@ int main() {
         sleep(5);
         // 发送心跳包
         printf("发送心跳...\n");
-        MQTT_SendBuf((unsigned char *)parket_heart, sizeof(parket_heart));
+        MQTT_SendBuf((unsigned char *)parket_heart, 2);
         sleep(10);  // 每10秒发送一次心跳包
     }
 
     // 断开连接
-    MQTT_SendBuf((unsigned char *)parket_disconnect, sizeof(parket_disconnect));
+   MQTT_SendBuf((unsigned char *)parket_disconnect, 2); 
     close(sockfd);
     return 0;
 }
