@@ -5,6 +5,11 @@
 
 #include <stddef.h>
 
+#define ClientID "67604637ef99673c8ad65ca8_stm32_0_1_2024122114"
+#define Username "67604637ef99673c8ad65ca8_stm32"
+#define Password \
+    "57a9b6cebdf0310af3adffcd9c7bdd84ec0c060f6ad492526223bcce7ac6dd3f"
+
 extern size_t mqtt_txlen;
 extern size_t mqtt_rxlen;
 extern int ClientIDLen;
@@ -20,9 +25,6 @@ extern unsigned char Buff[256];  // 添加 Buff 的声明
 extern int sockfd;
 extern char mqtt_message[1024];
 
-extern const char ClientID[];
-extern const char Username[];
-extern const char Password[];
 
 extern const unsigned char parket_connectAck[];
 extern const unsigned char parket_disconnect[];
