@@ -8,6 +8,7 @@
 #include "connect_and_connack.h"
 #include "PUBACK.h"
 #include "PUBLISH.h"
+#include "globals.h"
 
 #define SERVER_IP "117.78.5.125"
 #define SERVER_PORT 1883
@@ -20,26 +21,6 @@
 #define SET_TOPIC "$oc/devices/67604637ef99673c8ad65ca8_stm32/sys/messages/down"
 #define POST_TOPIC \
     "$oc/devices/67604637ef99673c8ad65ca8_stm32/sys/properties/report"
-
-unsigned char Buff[256];
-int sockfd;
-size_t mqtt_txlen = 0;
-unsigned char mqtt_txbuf[256];
-size_t mqtt_rxlen = 0;
-unsigned char mqtt_rxbuf[1024 * 1024];
-int ClientIDLen = sizeof(ClientID) - 1;
-int UsernameLen = sizeof(Username) - 1;
-int PasswordLen = sizeof(Password) - 1;
-size_t GlobalDataLen;
-size_t Size = 0;
-char mqtt_message[1024];
-double TEMP = 10.0;
-
-const unsigned char parket_connectAck[] = {0x20, 0x02, 0x00, 0x00};
-const unsigned char parket_disconnect[] = {0xe0, 0x00};
-const unsigned char parket_heart[] = {0xc0, 0x00};
-const unsigned char parket_heart_reply[] = {0xc0, 0x00};
-const unsigned char parket_subAck[] = {0x90, 0x03};
 
 void MQTT_SendBuf(unsigned char *buf, size_t len);
 int Client_GetData(unsigned char *buffer);

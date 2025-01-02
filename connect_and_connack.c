@@ -4,40 +4,25 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include "globals.h"  // 包含 globals.h 以使用全局变量
 
 #define ClientID "67604637ef99673c8ad65ca8_stm32_0_1_2024122114"
 #define Username "67604637ef99673c8ad65ca8_stm32"
-#define Password "57a9b6cebdf0310af3adffcd9c7bdd84ec0c060f6ad492526223bcce7ac6dd3f"
-
-unsigned char Buff[256];
-int sockfd;
-size_t mqtt_txlen = 0;
-unsigned char mqtt_txbuf[256];
-size_t mqtt_rxlen = 0;
-unsigned char mqtt_rxbuf[1024 * 1024];
-int ClientIDLen = sizeof(ClientID) - 1;
-int UsernameLen = sizeof(Username) - 1;
-int PasswordLen = sizeof(Password) - 1;
-size_t GlobalDataLen;
-size_t Size = 0;
-char mqtt_message[1024];
-double TEMP = 10.0;
-
-const unsigned char parket_connectAck[] = {0x20, 0x02, 0x00, 0x00};
-const unsigned char parket_disconnect[] = {0xe0, 0x00};
-const unsigned char parket_heart[] = {0xc0, 0x00};
-const unsigned char parket_heart_reply[] = {0xc0, 0x00};
-const unsigned char parket_subAck[] = {0x90, 0x03};
+#define Password \
+    "57a9b6cebdf0310af3adffcd9c7bdd84ec0c060f6ad492526223bcce7ac6dd3f"
 
 void MQTT_SendBuf(unsigned char *buf, size_t len);
 int Client_GetData(unsigned char *buffer);
 int Client_SendData(unsigned char *buf, size_t len);
-unsigned char MQTT_Connect(const char *clientID, const char *username, const char *password);
+unsigned char MQTT_Connect(
+    const char *clientID, const char *username, const char *password);
 
-unsigned char MQTT_Connect(const char *clientID, const char *username, const char *password) {
+unsigned char MQTT_Connect(
+    const char *clientID, const char *username, const char *password) {
     mqtt_txlen = 0;
     mqtt_txbuf[mqtt_txlen++] = 0x10;
-    GlobalDataLen = 10 + (ClientIDLen + 2) + (UsernameLen + 2) + (PasswordLen + 2);
+    GlobalDataLen =
+        10 + (ClientIDLen + 2) + (UsernameLen + 2) + (PasswordLen + 2);
     size_t remainingLength = GlobalDataLen;
     do {
         unsigned char encodeByte = remainingLength % 128;

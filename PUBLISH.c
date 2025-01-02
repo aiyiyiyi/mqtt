@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include "connect_and_connack.h"
+#include "globals.h"  // 包含 globals.h 以使用全局变量
 
 #define SERVER_IP "117.78.5.125"
 #define SERVER_PORT 1883
@@ -13,17 +14,8 @@ extern const unsigned char parket_subAck[];
 
 unsigned char Buff[256];
 int sockfd;
-size_t mqtt_txlen = 0;
 unsigned char mqtt_txbuf[256];
-size_t mqtt_rxlen = 0;
 unsigned char mqtt_rxbuf[1024 * 1024];
-int ClientIDLen = sizeof(ClientID) - 1;
-int UsernameLen = sizeof(Username) - 1;
-int PasswordLen = sizeof(Password) - 1;
-size_t GlobalDataLen;
-size_t Size = 0;
-char mqtt_message[1024];
-double TEMP = 10.0;
 
 // 模拟 MQTT 发布数据函数
 unsigned char MQTT_PublishData(char *topic, char *message, unsigned char qos) {
