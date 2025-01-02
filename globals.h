@@ -20,6 +20,10 @@ extern unsigned char Buff[256];  // 添加 Buff 的声明
 extern int sockfd;
 extern char mqtt_message[1024];
 
+extern const char ClientID[];
+extern const char Username[];
+extern const char Password[];
+
 extern const unsigned char parket_connectAck[];
 extern const unsigned char parket_disconnect[];
 extern const unsigned char parket_heart[];

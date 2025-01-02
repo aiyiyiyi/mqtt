@@ -6,11 +6,6 @@
 #include <unistd.h>
 #include "globals.h"  // 包含 globals.h 以使用全局变量
 
-#define ClientID "67604637ef99673c8ad65ca8_stm32_0_1_2024122114"
-#define Username "67604637ef99673c8ad65ca8_stm32"
-#define Password \
-    "57a9b6cebdf0310af3adffcd9c7bdd84ec0c060f6ad492526223bcce7ac6dd3f"
-
 void MQTT_SendBuf(unsigned char *buf, size_t len);
 int Client_GetData(unsigned char *buffer);
 int Client_SendData(unsigned char *buf, size_t len);

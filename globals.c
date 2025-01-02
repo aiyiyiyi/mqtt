@@ -20,3 +20,7 @@ const unsigned char parket_disconnect[] = {0xe0, 0x00};
 const unsigned char parket_heart[] = {0xc0, 0x00};
 const unsigned char parket_heart_reply[] = {0xc0, 0x00};
 const unsigned char parket_subAck[] = {0x90, 0x03};
+
+const char ClientID[] = "67604637ef99673c8ad65ca8_stm32_0_1_2024122114";
+const char Username[] = "67604637ef99673c8ad65ca8_stm32";
+const char Password[] = "57a9b6cebdf0310af3adffcd9c7bdd84ec0c060f6ad492526223bcce7ac6dd3f";

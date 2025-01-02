@@ -10,13 +10,6 @@
 #define SERVER_IP "117.78.5.125"
 #define SERVER_PORT 1883
 
-extern const unsigned char parket_subAck[];
-
-unsigned char Buff[256];
-int sockfd;
-unsigned char mqtt_txbuf[256];
-unsigned char mqtt_rxbuf[1024 * 1024];
-
 // 模拟 MQTT 发布数据函数
 unsigned char MQTT_PublishData(char *topic, char *message, unsigned char qos) {
     unsigned int topicLength = (unsigned int)strlen(topic);
@@ -95,7 +88,7 @@ int Socket() {
     char* topic = "test/topic";
     char* message = "{\"key\":\"value\"}";
     unsigned char qos = 0;
-    MQTT_PublishData(topic, message, qos, sockfd);
+    MQTT_PublishData(topic, message, qos);
 
     close(sockfd);
     return 0;

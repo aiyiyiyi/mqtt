@@ -8,14 +8,6 @@
 #include "PUBACK.h"
 #include "globals.h"
 
-// MQTT三元组
-#define ClientID "67604637ef99673c8ad65ca8_stm32_0_1_2024122114"
-#define Username "67604637ef99673c8ad65ca8_stm32"
-#define Password \
-    "57a9b6cebdf0310af3adffcd9c7bdd84ec0c060f6ad492526223bcce7ac6dd3f"
-
-
-
 #define SERVER_IP "117.78.5.125"
 #define SERVER_PORT 1883
 
