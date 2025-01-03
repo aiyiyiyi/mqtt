@@ -11,8 +11,6 @@
 #define SERVER_IP "117.78.5.125"
 #define SERVER_PORT 1883
 
-
-
 // 发布确认
 unsigned char SubscribeTopic(
     char *topic, unsigned char qos, unsigned char whether) {
@@ -31,14 +29,15 @@ unsigned char SubscribeTopic(
     localDataLen = 2 + (topicLength + 2) + (whether ? 1 : 0);
 
     // 编码数据长度
+    size_t len = localDataLen;
     do {
-        unsigned char encodedByte = localDataLen % 128;
-        localDataLen = localDataLen / 128;
-        if (localDataLen > 0) {
+        unsigned char encodedByte = len % 128;
+        len = len / 128;
+        if (len > 0) {
             encodedByte |= 0x80;
         }
         mqtt_txbuf[mqtt_txlen++] = encodedByte;
-    } while (localDataLen > 0);
+    } while (len > 0);
 
     // 可变报头
     mqtt_txbuf[mqtt_txlen++] = 0;  // 保持会话标志
