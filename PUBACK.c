@@ -11,6 +11,12 @@
 #define SERVER_IP "117.78.5.125"
 #define SERVER_PORT 1883
 
+int Client_GetData(unsigned char *buffer);
+int Client_SendData(unsigned char *buf, size_t len);
+void MQTT_SendBuf(unsigned char *buf, size_t len);
+unsigned char SubscribeTopic(
+    char *topic, unsigned char qos, unsigned char whether);
+
 // 发布确认
 unsigned char SubscribeTopic(
     char *topic, unsigned char qos, unsigned char whether) {
@@ -18,7 +24,7 @@ unsigned char SubscribeTopic(
     size_t localDataLen = 0;
     unsigned int topicLength = (unsigned int)strlen(topic);
     unsigned char buff[256] = {0};
-    mqtt_txlen = 0;
+    // mqtt_txlen = 0;
 
     // 固定报头(包含剩余长度)
     if (whether) {
@@ -40,8 +46,8 @@ unsigned char SubscribeTopic(
     } while (len > 0);
 
     // 可变报头
-    mqtt_txbuf[mqtt_txlen++] = 0;  // 保持会话标志
-    mqtt_txbuf[mqtt_txlen++] = 1;  // 订阅标识符
+    mqtt_txbuf[mqtt_txlen++] = 0;     // 保持会话标志
+    mqtt_txbuf[mqtt_txlen++] = 0x01;  // 订阅标识符
 
     // 有效载荷
     mqtt_txbuf[mqtt_txlen++] = (topicLength >> 8) & 0xFF;
@@ -55,10 +61,11 @@ unsigned char SubscribeTopic(
     }
 
     // 循环连接
-    for (i = 0; i < 100; i++) {
-        memset(mqtt_rxbuf, 0, sizeof(mqtt_rxbuf));
-        send(sockfd, mqtt_txbuf, mqtt_txlen, 0);  // 使用send函数发送数据
-        int SIZE = recv(sockfd, buff, sizeof(buff), 0);  // 使用recv函数接收数据
+    for (i = 0; i < 10; i++) {
+        /*memset(mqtt_rxbuf, 0, sizeof(mqtt_rxbuf));*/
+        memset(mqtt_rxbuf, 0, mqtt_rxlen);
+        mqtt_sendBuf(mqtt_txbuf, mqtt_txlen);  // 使用mqtt_sendBuf函数发送数据
+        int SIZE = Client_GetData(buff);  // 使用recv函数接收数据
 
         // 接收服务器响应并打印服务器响应
         if (SIZE <= 0) {
@@ -81,11 +88,37 @@ unsigned char SubscribeTopic(
         printf("\r\n");
 
         // 检查是否收到正确的订阅应答
-        if (SIZE >= 3 && mqtt_rxbuf[0] == parket_subAck[0] &&
+        if (mqtt_rxbuf[0] == parket_subAck[0] &&
             mqtt_rxbuf[1] == parket_subAck[1]) {
             return 0;
         }
         usleep(1000 * 1000);  // 休眠1秒
     }
     return 1;
+}
+int Client_SendData(unsigned char *buf, size_t len) {
+    if (send(sockfd, buf, len, 0) == -1) {
+        perror("Client数据发送失败");
+        close(sockfd);
+        return -1;
+    }
+    return 0;
+}
+
+void MQTT_SendBuf(unsigned char *buf, size_t len) { Client_SendData(buf, len); }
+
+int Client_GetData(unsigned char *buffer) {
+    int received = recv(sockfd, buffer, 200, 0);
+    if (received < 0) {
+        perror("接收数据失败");
+        close(sockfd);
+        return -1;
+    } else if (received == 0) {
+        printf("服务器关闭连接\n");
+        close(sockfd);
+        return -1;
+    } else {
+        printf("数据接收成功: %d 字节\n", received);
+    }
+    return received;
 }
