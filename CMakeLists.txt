@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.16)
 
 project(myproject C CXX)
 
-add_executable(globals globals.c)
-add_executable(PUBACK PUBACK.c connect_and_connack.c globals.c)
-add_executable(PUBLISH PUBLISH.c connect_and_connack.c globals.c)
-add_executable(CONNECT connect_and_connack.c globals.c)
-add_executable(main main.c connect_and_connack.c PUBACK.c PUBLISH.c globals.c)
+#add_executable(globals globals.c)
+#add_executable(PUBACK PUBACK.c connect_and_connack.c globals.c)
+#add_executable(PUBLISH PUBLISH.c connect_and_connack.c globals.c)
+#add_executable(CONNECT connect_and_connack.c globals.c)
+add_executable(main main.c connect_and_connack.c PUBACK.c PUBLISH.c globals.c tcp.c init.c)
 
 # add_library(mylib SHARED ncJSON.c)
 

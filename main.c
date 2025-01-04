@@ -9,15 +9,10 @@
 #include "PUBACK.h"
 #include "PUBLISH.h"
 #include "globals.h"
+#include "tcp.h"
+#include "init.h"
 
-
-#define SERVER_IP "117.78.5.125"
-#define SERVER_PORT 1883
-
-#define SET_TOPIC "$oc/devices/67604637ef99673c8ad65ca8_stm32/sys/messages/down"
-#define POST_TOPIC \
-    "$oc/devices/67604637ef99673c8ad65ca8_stm32/sys/properties/report"
-
+int tcp_socket();
 void MQTT_SendBuf(unsigned char *buf, size_t len);
 int Client_GetData(unsigned char *buffer);
 int Client_SendData(unsigned char *buf, size_t len);
@@ -30,26 +25,9 @@ void MQTT_Init(void);
 
 int main() {
     // 创建socket
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd == -1) {
-        perror("socket creation failed");
-        return 1;
-    }
-
-    // 配置服务器地址
-    struct sockaddr_in sin;
-    sin.sin_family = AF_INET;
-    sin.sin_port = htons(1883);
-    sin.sin_addr.s_addr = inet_addr("117.78.5.125");
-
-    // 连接服务器
-    if (connect(sockfd, (struct sockaddr *)&sin, sizeof(sin)) < 0) {
-        perror("socket连接失败");
-        close(sockfd);
+    if (tcp_socket() == -1) {
         return -1;
     }
-    printf("Socket连接成功\n");
-
     // 初始化字符串长度
     MQTT_Init();
     while (1) {
@@ -87,15 +65,8 @@ int main() {
     }
 
     // 断开连接
-   MQTT_SendBuf((unsigned char *)parket_disconnect, 2); 
+    MQTT_SendBuf((unsigned char *)parket_disconnect, 2);
     close(sockfd);
     return 0;
 }
 
-void MQTT_Init(void) {
-    // 缓冲区赋值
-    mqtt_rxlen = sizeof(mqtt_rxbuf);
-    mqtt_txlen = sizeof(mqtt_txbuf);
-    memset(mqtt_rxbuf, 0, mqtt_rxlen);
-    memset(mqtt_txbuf, 0, mqtt_txlen);
-}

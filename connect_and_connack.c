@@ -5,7 +5,9 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include "globals.h"  // 包含 globals.h 以使用全局变量
+#include "tcp.h"
 
+int tcp_socket();
 void MQTT_SendBuf(unsigned char *buf, size_t len);
 int Client_GetData(unsigned char *buffer);
 int Client_SendData(unsigned char *buf, size_t len);
@@ -14,6 +16,9 @@ unsigned char MQTT_Connect(
 
 unsigned char MQTT_Connect(
     const char *clientID, const char *username, const char *password) {
+    if (tcp_socket() == -1) {
+        return -1;
+    }
     mqtt_txlen = 0;
     mqtt_txbuf[mqtt_txlen++] = 0x10;
     GlobalDataLen =
