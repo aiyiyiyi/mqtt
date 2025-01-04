@@ -64,7 +64,7 @@ unsigned char SubscribeTopic(
     for (i = 0; i < 10; i++) {
         /*memset(mqtt_rxbuf, 0, sizeof(mqtt_rxbuf));*/
         memset(mqtt_rxbuf, 0, mqtt_rxlen);
-        mqtt_sendBuf(mqtt_txbuf, mqtt_txlen);  // 使用mqtt_sendBuf函数发送数据
+        MQTT_SendBuf(mqtt_txbuf, mqtt_txlen);  // 使用mqtt_sendBuf函数发送数据
         int SIZE = Client_GetData(buff);  // 使用recv函数接收数据
 
         // 接收服务器响应并打印服务器响应
@@ -96,7 +96,7 @@ unsigned char SubscribeTopic(
     }
     return 1;
 }
-int Client_SendData(unsigned char *buf, size_t len) {
+/*int Client_SendData(unsigned char *buf, size_t len) {
     if (send(sockfd, buf, len, 0) == -1) {
         perror("Client数据发送失败");
         close(sockfd);
@@ -121,4 +121,4 @@ int Client_GetData(unsigned char *buffer) {
         printf("数据接收成功: %d 字节\n", received);
     }
     return received;
-}
+}*/

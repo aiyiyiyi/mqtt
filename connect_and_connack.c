@@ -108,7 +108,7 @@ int Client_GetData(unsigned char *buffer) {
     } else if (received == 0) {
         printf("服务器关闭连接\n");
         close(sockfd);
-        return -1;
+        return 0;  // 返回 0 表示服务器关闭连接
     } else {
         printf("数据接收成功: %d 字节\n", received);
     }
