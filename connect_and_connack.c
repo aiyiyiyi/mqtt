@@ -111,7 +111,7 @@ int Client_GetData(unsigned char *buffer) {
         close(sockfd);
         return -1;
     } else if (received == 0) {
-        printf("服务器关闭连接\n");
+        printf("服务器关闭连接,未接收到消息\n");
         close(sockfd);
         return 0;  // 返回 0 表示服务器关闭连接
     } else {

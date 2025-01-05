@@ -15,6 +15,7 @@ unsigned char MQTT_PublishData(char *topic, char *message, unsigned char qos) {
     unsigned int topicLength = (unsigned int)strlen(topic);
     unsigned int messageLength = (unsigned int)strlen(message);
     size_t localDataLen;
+    int i,j;
     unsigned short id = 0;
 
     printf("上报JSON消息长度为:%d\n", messageLength);
@@ -54,10 +55,32 @@ unsigned char MQTT_PublishData(char *topic, char *message, unsigned char qos) {
     memcpy(&mqtt_txbuf[mqtt_txlen], message, messageLength);
     mqtt_txlen += messageLength;
 
-    if (send(sockfd, mqtt_txbuf, mqtt_txlen, 0) < 0) {
-        perror("send");
-        return 0;
-    }
+    for ( i = 0;i < 5; i++) {
+        memset(mqtt_rxbuf, 0, mqtt_rxlen);
+        MQTT_SendBuf(mqtt_txbuf, mqtt_txlen);  // 使用mqtt_sendBuf函数发送数据
+        int SIZEOF = Client_GetData(buffs);
+        if (SIZEOF <= 0) {
+            if (SIZEOF == 0) {
+                perror("publish未收到puback数据,重试...: \n");
+            } else {
+                perror("publish接收puback数据失败,重试...: \n");
+            }
+            continue;
+        }
+        memcpy(mqtt_rxbuf, buffs, SIZEOF);
+        printf("发布消息应答\n");
+        for (j = 0; j < SIZEOF; j++) {
+            printf("%#X ", mqtt_rxbuf[j]);
+        }
+        printf("\n");
 
+        // 检查是否收到正确的订阅应答
+        if (mqtt_rxbuf[0] == parket_pubAck[0] &&
+            mqtt_rxbuf[1] == parket_pubAck[1]) {
+            //printf("设备成功发布主题，\n");
+            return 0;
+        }
+        usleep(1000 * 1000);
+    }
     return mqtt_txlen;
 }

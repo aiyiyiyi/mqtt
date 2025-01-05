@@ -24,6 +24,7 @@ unsigned char SubscribeTopic(
 void MQTT_Init(void);
 
 int main() {
+    /*多线程问题：如果程序使用多线程，可能在一个线程中关闭了套接字(connect_and_connack还有一个sock连接，导致错误)，而另一个线程仍在尝试使用它。*/
     // 创建socket
     if (tcp_socket() == -1) {
         return -1;
@@ -57,11 +58,11 @@ int main() {
         // 发布主题
         MQTT_PublishData((char *)POST_TOPIC, mqtt_message, 0);
         printf("发布消息成功\n");
-        sleep(5);
-        // 发送心跳包
+        sleep(10);
+        /**发送心跳包
         printf("发送心跳...\n");
         MQTT_SendBuf((unsigned char *)parket_heart, 2);
-        sleep(10);  // 每10秒发送一次心跳包
+        sleep(5);  // 每10秒发送一次心跳包*/
     }
 
     // 断开连接

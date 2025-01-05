@@ -67,7 +67,7 @@ unsigned char SubscribeTopic(
         MQTT_SendBuf(mqtt_txbuf, mqtt_txlen);  // 使用mqtt_sendBuf函数发送数据
         int SIZE = Client_GetData(buff);  // 使用recv函数接收数据
 
-        // 接收服务器响应并打印服务器响应
+        // 接收服务器响应并打印服务器订阅响应
         if (SIZE <= 0) {
             if (SIZE == 0) {
                 printf("未收到数据，重试...\n");
@@ -81,15 +81,16 @@ unsigned char SubscribeTopic(
             continue;
         }
         memcpy(mqtt_rxbuf, buff, SIZE);
-        printf("订阅应答\r\n");
+        printf("订阅应答\n");
         for (j = 0; j < SIZE; j++) {
             printf("%#X ", mqtt_rxbuf[j]);
         }
-        printf("\r\n");
+        printf("\n");
 
         // 检查是否收到正确的订阅应答
         if (mqtt_rxbuf[0] == parket_subAck[0] &&
             mqtt_rxbuf[1] == parket_subAck[1]) {
+          //  printf("设备成功订阅了主题，并且服务器确认订阅请求\n");
             return 0;
         }
         usleep(1000 * 1000);  // 休眠1秒
